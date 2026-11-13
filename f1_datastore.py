@@ -1,6 +1,6 @@
 import sqlite3
 import csv
-
+import ast
 
 class Datastore:
     """
@@ -39,7 +39,7 @@ class Datastore:
                 points = float(record["Points"])
 
                 # view the driver data
-                self.add_driver(
+                driver_id = self.add_driver(
                     name,
                     nationality,
                     race_entries,
@@ -50,7 +50,16 @@ class Datastore:
                     fastest_laps,
                     points,
                 )
+                # process only the championship years
+                if record["Championship Years"]:
+                    years = ast.literal_eval(record["Championship Years"])
 
+                    for year in years:
+                        self.add_season(year, driver_id)
+                # process driver seasons
+                seasons = ast.literal_eval(record["Seasons"])
+                for season in seasons:
+                    self.add_raced(driver_id, season)
     def add_driver(
         self,
         name: str,
@@ -84,3 +93,30 @@ class Datastore:
             },
         )
 
+        return self.cursor.lastrowid
+
+    def add_season(self, year: int, champion: int):
+        """
+        adds a season to the database
+        """
+        self.cursor.execute(
+            """
+            INSERT INTO Seasons
+            VALUES (:year, :champion)
+            """,
+            {
+                "year": year, 
+                "champion": champion
+            },
+        )
+    def add_raced(self, driver_id: int, year: int):
+        self.cursor.execute(
+            """
+            INSERT INTO Raced
+            VALUES (:driver_id, :year)
+            """,
+            {
+                "driver_id": driver_id, 
+                "year": year
+            },
+        )
