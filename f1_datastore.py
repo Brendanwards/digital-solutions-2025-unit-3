@@ -31,8 +31,8 @@ class Datastore:
                 name = record["Driver"]
                 nationality = record["Nationality"]
                 race_entries = int(float(record["Race_Entries"]))
-                race_starts = int(float(record["Race_Starts"]))
-                pole_positions = int(float(record["Pole_Positions"]))
+                race_starts = int(float(record["Race_Start"]))
+                pole_positions = int(float(record["Pole_Position"]))
                 race_wins = int(float(record["Race_Wins"]))
                 podiums = int(float(record["Podiums"]))
                 fastest_laps = int(float(record["Fastest_Laps"]))
