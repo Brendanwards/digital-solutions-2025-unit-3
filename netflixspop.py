@@ -3,7 +3,7 @@ import sqlite3
 
 class Datastore:
     """
-    Datastore for the f1 driver database
+    Datastore for the netflix show database
     """
 
     def __init__(self, database_file: str, data_file: str):
